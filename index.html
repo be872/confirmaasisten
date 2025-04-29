@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Confirmar Asistencia</title>
+<style>
+    body {
+        background-image: url('fondo.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        backdrop-filter: brightness(1.2);
+    }
+
+    @media (max-width: 600px) {
+        .form-container {
+            padding: 20px;
+            width: 90%;
+        }
+        input, select, button {
+            font-size: 16px;
+            padding: 14px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+    }
+    
+    body {
+        background-color: #ffffff;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        color: #b89939;
+    }
+    .form-container {
+        background: #ffffff;
+        padding: 30px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+    }
+    h1, label {
+        color: #b89939;
+    }
+    select, input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #b89939;
+        font-size: 14px;
+        color: #b89939;
+        background-color: #ffffff;
+    }
+    button {
+        background-color: #b89939;
+        color: white;
+        border: none;
+        padding: 14px 24px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+        margin-top: 10px;
+    }
+    button:hover {
+        background-color: #a3872e;
+    }
+</style>
+<script>
+    function mostrarCampos() {
+        const cantidad = document.getElementById('cantidad').value;
+        const personasDiv = document.getElementById('personas');
+        personasDiv.innerHTML = '';
+
+        for (let i = 1; i <= cantidad; i++) {
+            personasDiv.innerHTML += `
+                <label>Nombre y Apellido de la Persona ${i}</label>
+                <input type="text" id="nombre${i}" placeholder="Nombre y Apellido">
+
+                <label>Requerimiento Alimenticio de la Persona ${i}</label>
+                <select id="menu${i}">
+                    <option value="Ninguno">Ninguno</option>
+                    <option value="Celiaco">Celiaco</option>
+                    <option value="Vegano">Vegano</option>
+                    <option value="Vegetariano">Vegetariano</option>
+                    <option value="Diabetes">Diabetes</option>
+                    <option value="Hipertenso">Hipertenso</option>
+                    <option value="Intolerante a la Lactosa">Intolerante a la Lactosa</option>
+                </select>
+            `;
+        }
+    }
+
+    function confirmarAsistencia() {
+        const cantidad = document.getElementById('cantidad').value;
+        let mensaje = `Hola, muchas gracias por la invitación!\n\nConfirmación de asistencia:\nCantidad de personas: ${cantidad}\n`;
+
+        for (let i = 1; i <= cantidad; i++) {
+            const nombre = document.getElementById(`nombre${i}`).value;
+            const menu = document.getElementById(`menu${i}`).value;
+            mensaje += `\nPersona ${i}:\nNombre: ${nombre}\nRequerimiento: ${menu}\n`;
+        }
+
+        const url = "https://wa.me/5492914232881?text=" + encodeURIComponent(mensaje);
+        window.open(url, '_blank');
+    }
+
+    // <<<<<< Esta parte la agrego para que al cargar la página ya aparezcan los campos de 1 persona
+    window.onload = function() {
+        mostrarCampos();
+    }
+</script>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Confirmar Asistencia</h1>
+
+    <label for="cantidad">Cantidad de personas:</label>
+    <select id="cantidad" onchange="mostrarCampos()">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+
+    <div id="personas"></div>
+
+    <button onclick="confirmarAsistencia()">Confirmar</button>
+</div>
+
+</body>
+</html>
